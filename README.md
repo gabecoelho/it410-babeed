@@ -1,2 +1,2 @@
-# it410-babeed
+# Babeed
 Project for BYU IT 410
