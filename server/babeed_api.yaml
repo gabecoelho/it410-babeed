@@ -1,0 +1,350 @@
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: 'Babeed API'
+  description: 'IT 410 Babeed Project'
+paths:
+  /users:
+    post:
+      x-controller: users
+      x-operation: addUser
+      summary: Create a user
+      tags:
+        - Users
+      requestBody:
+        $ref: '#/components/requestBodies/UserLogin'
+      responses:
+        200:
+          description: User created.
+        400:
+          description: Bad request.
+        500:
+          description: Server error.
+        default:
+          description: Unexpected
+    put:
+      x-controller: users
+      x-operation: login
+      summary: Log in
+      tags:
+        - Users
+      requestBody:
+        $ref: '#/components/requestBodies/UserLogin'
+      responses:
+        200:
+          description: Log in successful.
+        400:
+          description: Bad request.
+        500:
+          description: Server error.
+        default:
+          description: Unexpected
+    delete:
+      x-controller: users
+      x-operation: logout
+      summary: Log out
+      tags:
+        - Users
+      responses:
+        204:
+          description: Logged out.
+        400:
+          description: Bad request.
+        500:
+          description: Server error.
+        default:
+          description: Unexpected
+  /users/{user_id}:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      x-controller: users
+      x-operation: getUserById
+      summary: Get a specific user
+      tags:
+        - Users
+      responses:
+          200:
+            description: A specific user
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/User'
+          400:
+            description: Bad request.
+          500:
+            description: Server error.
+          default:
+            description: Unexpected
+  /diapers:
+    get:
+      x-controller: diapers
+      x-operation: getDiapers
+      summary: Get a list of diapers
+      tags:
+        - Diapers
+      responses:
+          200:
+            description: A list of diapers.
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Diaper'
+          400:
+            description: Bad request.
+          500:
+            description: Server error.
+          default:
+            description: Unexpected
+    post:
+        x-controller: diapers
+        x-operation: addDiaper
+        summary: Add a new diaper entry
+        tags:
+          - Diapers
+        requestBody:
+          $ref: '#/components/requestBodies/Diaper'
+        responses:
+          200:
+            description: Message posted.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Diaper'
+          400:
+            description: Bad request.
+          500:
+            description: Server error.
+          default:
+            description: Unexpected
+  /diapers/{diaper_id}:
+      parameters:
+        - $ref: '#/components/parameters/DiaperId'
+      get:
+        x-controller: diapers
+        x-operation: getDiaperById
+        summary: Get a specific diaper entry
+        tags:
+          - Diapers
+        responses:
+            200:
+              description: A specific diaper entry
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Diaper'
+            400:
+              description: Bad request.
+            500:
+              description: Server error.
+            default:
+              description: Unexpected
+      put:
+        x-controller: diapers
+        x-operation: updateDiaperById
+        summary: Update a specific diaper entry
+        tags:
+          - Diapers
+        requestBody:
+          $ref: '#/components/requestBodies/Diaper'
+        responses:
+          200:
+            description: Updated diaper entry successfully.
+          400:
+            description: Bad request.
+          500:
+            description: Server error.
+          default:
+            description: Unexpected
+      delete:
+        x-controller: diapers
+        x-operation: deleteDiaperById
+        summary: Delete a diaper entry
+        tags:
+          - Diapers
+        responses:
+          204:
+            description: Deleted specified diaper entry.
+          400:
+            description: Bad request.
+          500:
+            description: Server error.
+          default:
+            description: Unexpected
+  /feedings:
+    get:
+      x-controller: feedings
+      x-operation: getList
+      summary: Get a list of feedings
+      tags:
+        - Feedings
+      responses:
+        200:
+          description: A list of feedings.
+        400:
+          description: Bad request.
+        500:
+          description: Server error.
+        default:
+          description: Unexpected.
+    post:
+      x-controller: feedings
+      x-operation: addFeeding
+      summary: Post a new feeding entry
+      tags:
+        - Feedings
+      requestBody:
+        $ref: '#/components/requestBodies/Feeding'
+      responses:
+        200:
+          description: A list of feedings.
+        400:
+          description: Bad request.
+        500:
+          description: Server error.
+        default:
+          description: Unexpected.
+  /feedings/{feeding_id}:
+    parameters:
+      - $ref: '#/components/parameters/FeedingId'
+    get:
+      x-controller: feedings
+      x-operation: getFeedingById
+      summary: Get a specific feeding
+      tags:
+        - Feedings
+      responses:
+          200:
+            description: A specific feeding entry
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Feeding'
+          400:
+            description: Bad request.
+          500:
+            description: Server error.
+          default:
+            description: Unexpected
+    put:
+        x-controller: feedings
+        x-operation: updateFeedingById
+        summary: Update a specific feeding entry
+        tags:
+          - Feedings
+        requestBody:
+          $ref: '#/components/requestBodies/Diaper'
+        responses:
+          200:
+            description: Updated feeding entry successfully.
+          400:
+            description: Bad request.
+          500:
+            description: Server error.
+          default:
+            description: Unexpected
+    delete:
+      x-controller: feedings
+      x-operation: deleteFeedingById
+      summary: Delete a feeding entry
+      tags:
+        - Feedings
+      responses:
+        204:
+          description: Deleted specified feeding entry.
+        400:
+          description: Bad request.
+        500:
+          description: Server error.
+        default:
+          description: Unexpected
+components:
+  parameters:
+    UserId:
+      name: user_id
+      in: path
+      required: true
+      schema:
+        type: string
+    DiaperId:
+      name: diaper_id
+      in: path
+      required: true
+      schema:
+        type: string
+    FeedingId:
+      name: feeding_id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBodies:
+    User:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+    Diaper:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Diaper'
+    Feeding:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Feeding'
+    UserLogin:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserLogin'
+  schemas:
+    User:
+      type: object
+      properties:
+        email:
+          description: The user's email address.
+          type: string
+        name:
+          description: The user name, displayed on messages.
+          type: string
+    Diaper:
+      type: object
+      properties:
+        "type":
+          type: string
+          description: The type of diaper (wet or poop)
+          enum:
+            - wet
+            - poop
+        timestamp:
+          type: string
+          description: The timestamp representation of when the event happened
+    Feeding:
+      type: object
+      properties:
+        start: 
+          type: string
+          description: Time feeding started
+        stop:
+          type: string
+          description: Time feeding stopped
+        minutes:
+          type: number
+          description: Total number of feeding minutes
+    UserLogin:
+      type: object
+      properties:
+        email:
+          description: The user's email address.
+          type: string
+        password:
+          description: The user's password.
+          type: string
+          # format: password
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/gabecoelho/410-babeed/1.0
