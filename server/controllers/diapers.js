@@ -1,28 +1,57 @@
-exports.getDiapers = function (req, res, next) {
-    let diapers = []
-    let diaper = {
-        "type": "poop",
-        "timestamp": "1580322570431"
+const Diaper = require('../models/diaper')
+
+exports.getDiapers = function (req, res) {
+    Diaper.find((err, diapers) => {
+        if (err)
+            console.log(err);
+        else
+            res.json(diapers)
+    });
+}
+
+exports.addDiaper = async function (req, res) {
+    let diaper = new Diaper(req.body)
+    console.log(diaper.toString());
+    try {
+        await diaper.save()
+        res.status(200).json({ "Message": "New diaper added successfully." })
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ "Message": "Failed to create new diaper." })
     }
-    diapers.push(diaper)
-    res.send(diapers)
 }
 
-exports.addDiaper = function (req, res, next) {
-    res.send('OK')
+exports.getDiaperById = async function (req, res) {
+    const id = req.params.id
+    try {
+        let result = await Diaper.findById(id)
+        res.send(result)
+    } catch (error) {
+        res.status(400).json({ "Message": "Failed to get specified diaper." })
+    }
 }
 
-exports.getDiaperById = function (req, res, next) {
-    const id = req.params.diaperId
-    res.send('OK')
+exports.updateDiaperById = async function (req, res) {
+    let diaper = new Diaper(req.body)
+    const id = req.params.id
+    try {
+        let result = await Diaper.findByIdAndUpdate(id, diaper, {
+            new: true
+        })
+        res.send(result)
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ "Message": "Failed to update diaper." })
+    }
 }
 
-exports.updateDiaperById = function (req, res, next) {
-    const id = req.params.diaperId
-    res.send('OK')
-}
-
-exports.deleteDiaperById = function (req, res, next) {
-    const id = req.params.diaperId
-    res.send('OK')
+exports.deleteDiaperById = async function (req, res) {
+    const id = req.params.id
+    try {
+        await Diaper.deleteOne({ _id: id })
+        res.send('Deleted record')
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ "Message": "Failed to delete diaper." })
+    }
 }

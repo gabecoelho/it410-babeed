@@ -1,19 +1,19 @@
-exports.getList = function (req, res, next) {
+exports.getFeedings = (req, res) => {
     res.send('OK')
 }
 
-exports.addFeeding = function (req, res, next) {
+exports.addFeeding = (req, res) => {
     res.send('OK')
 }
 
-exports.getFeedingById = function (req, res, next) {
+exports.getFeedingById = (req, res) => {
     res.send('OK')
 }
 
-exports.updateFeedingById = function (req, res, next) {
+exports.updateFeedingById = (req, res) => {
     res.send('OK')
 }
 
-exports.deleteFeedingById = function (req, res, next) {
+exports.deleteFeedingById = (req, res) => {
     res.send('OK')
 }

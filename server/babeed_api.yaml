@@ -176,7 +176,7 @@ paths:
   /feedings:
     get:
       x-controller: feedings
-      x-operation: getList
+      x-operation: getFeedings
       summary: Get a list of feedings
       tags:
         - Feedings

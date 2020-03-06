@@ -4,7 +4,8 @@
   "description": "IT 410 Babeed Server API application",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test",
+    "test:watch": "mocha --watch test"
   },
   "repository": {
     "type": "git",
@@ -17,8 +18,19 @@
   },
   "homepage": "https://github.com/gabecoelho/it410-babeed#readme",
   "dependencies": {
+    "bcrypt": "^4.0.1",
+    "connect-mongodb-session": "^2.3.1",
+    "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "mongoose": "^5.9.2",
     "openapi-enforcer": "^1.8.2",
-    "openapi-enforcer-middleware": "^1.2.2"
+    "openapi-enforcer-middleware": "^1.2.2",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.0.1"
   }
 }
