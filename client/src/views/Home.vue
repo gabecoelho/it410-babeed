@@ -1,18 +1,35 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-  </div>
+  <v-app>
+    <div class="home"></div>
+    <v-tabs
+      background-color="#0277BD"
+      dark
+      :align-with-title="true"
+      :centered="true"
+      grow
+      show-arrows
+    >
+      <v-tab>Feeding</v-tab>
+      <v-tab-item>
+        <feeding />
+      </v-tab-item>
+      <v-tab>Diapers</v-tab>
+      <v-tab-item>
+        <diapers />
+      </v-tab-item>
+    </v-tabs>
+  </v-app>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import Feeding from "@/components/Home/Feeding";
+import Diapers from "@/components/Home/Diapers";
 
 export default {
   name: "Home",
   components: {
-    HelloWorld
+    Feeding,
+    Diapers
   }
 };
 </script>

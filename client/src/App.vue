@@ -1,8 +1,11 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark></v-app-bar>\
+    <v-app-bar app color="#78909C" dark>
+      <v-toolbar-title class="baby-emoji">👶Babeed</v-toolbar-title>
+      <v-spacer></v-spacer>
+    </v-app-bar>
     <v-content>
-      <Signin />
+      <router-view></router-view>
     </v-content>
   </v-app>
 </template>
@@ -22,3 +25,9 @@ export default {
   })
 };
 </script>
+
+<style lang="stylus">
+.baby-emoji {
+  font-size: 4rem;
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="500" outlined>
+  <v-card class="mx-auto card-spacing" max-width="500" outlined>
     <v-list-item three-line>
       <v-list-item-content>
         <v-list-item-title v-if="isSignup" class="headline mb-1">SIGNUP</v-list-item-title>
@@ -38,6 +38,35 @@
                 ></v-text-field>
               </v-col>
             </v-row>
+
+            <v-col v-if="isSignup" cols="12" md="12">
+              <h3>Baby's gender:</h3>
+              <v-radio-group
+                required
+                v-model="gender"
+                :mandatory="false"
+                :rules="[v => !!v || 'You must pick one to continue!']"
+              >
+                <v-radio label="Boy" value="boy" color="#64B5F6" />
+                <v-radio label="Girl" value="girl" color="pink" />
+              </v-radio-group>
+            </v-col>
+
+            <v-col v-if="isSignup">
+              <v-switch v-model="terms" :rules="[v => !!v || 'You must agree to continue!']">
+                <template v-slot:label>
+                  <div>
+                    I agree with the
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on }">
+                        <span class="terms" @click.stop v-on="on">Terms and Conditions</span>
+                      </template>
+                      You agree to share your information and let us store it.
+                    </v-tooltip>
+                  </div>
+                </template>
+              </v-switch>
+            </v-col>
           </v-container>
         </v-form>
       </v-list-item-content>
@@ -84,27 +113,14 @@ export default {
       emailRules: [
         v => !!v || "The email field is required.",
         v => /.+@.+/.test(v) || "Please enter a valid email."
-      ]
+      ],
+      gender: "",
+      terms: false
     };
   },
   methods: {
-    validateForm(isSignUp) {
-      console.log("isSignUp = " + this.isSignUp);
-      if (isSignUp) {
-        if (this.email && this.password === this.secondPassword) {
-          alert("valid form");
-        } else {
-          alert("invalid form");
-        }
-      } else {
-        if (this.email && this.password) {
-          console.log("valid form");
-        }
-      }
-    },
     onSubmit(isSignup) {
-      this.validateForm(isSignup);
-      console.log("Form submitted");
+      alert("Form submitted");
     },
     switchForm(input) {
       this.isSignup = input;
@@ -119,5 +135,15 @@ export default {
 <style>
 .button-padding-15 {
   padding-bottom: 15px;
+}
+
+.terms {
+  color: #1565c0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.card-spacing {
+  margin-top: 20px;
 }
 </style>
