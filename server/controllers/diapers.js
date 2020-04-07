@@ -1,7 +1,8 @@
 const Diaper = require('../models/diaper')
 
 exports.getDiapers = function (req, res) {
-    Diaper.find((err, diapers) => {
+    const email = req.user.email
+    Diaper.find({ email }, (err, diapers) => {
         if (err)
             console.log(err);
         else

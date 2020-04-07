@@ -176,7 +176,7 @@ paths:
   /feedings:
     get:
       x-controller: feedings
-      x-operation: getFeedings
+      x-operation: getList
       summary: Get a list of feedings
       tags:
         - Feedings
@@ -326,15 +326,12 @@ components:
     Feeding:
       type: object
       properties:
-        start: 
+        email: 
           type: string
-          description: Time feeding started
-        stop:
-          type: string
-          description: Time feeding stopped
-        minutes:
+          description: Email from account related to entry
+        time:
           type: number
-          description: Total number of feeding minutes
+          description: Total number of feeding in minutes
     UserLogin:
       type: object
       properties:
