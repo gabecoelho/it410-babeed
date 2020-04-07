@@ -11,6 +11,14 @@ exports.getUserById = async function (req, res, next) {
         res.status(400).send("Failed to find user.")
     }
 }
+exports.getUserByEmail = async function (email, res, next) {
+    try {
+        return await User.find({ email: email })
+    } catch (error) {
+        console.log(error)
+        throw new Error(error)
+    }
+}
 
 exports.addUser = async function (req, res, next) {
     try {

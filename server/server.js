@@ -9,10 +9,19 @@ const cookieParser = require('cookie-parser')
 const LocalStrategy = require('passport-local').Strategy
 const passport = require('passport')
 const session = require('express-session')
+const cors = require('cors')
 const app = express()
-const port = 8080
+const port = 8081
 const User = require('./models/user')
 var MongoDBStore = require('connect-mongodb-session')(session);
+
+var corsOptions = {
+    origin: 'http://localhost:8080',
+    credentials: true
+    // optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors(corsOptions))
 
 mongoose.connect('mongodb://localhost:27017/babeed', { useUnifiedTopology: true, useNewUrlParser: true })
 const connection = mongoose.connection
@@ -59,9 +68,13 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(session({
-    secret: "in pheenax not family the", cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
-    }, store: store, resave: false, saveUninitialized: true
+    secret: "in pheenax not family the",
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+        // domain: '127.0.0.1:8080'
+        secure: false
+    },
+    store: store, resave: true, saveUninitialized: true
 }))
 app.use(passport.initialize())
 app.use(passport.session())
@@ -76,6 +89,7 @@ const enforcer = Enforcer(pathToOpenApiDoc)
 app.use((req, res, next) => {
     console.log("Path: " + req.path)
     console.log("Method: " + req.method)
+    // console.log(req.body)
     next()
 })
 
@@ -107,23 +121,16 @@ app.use((req, res, next) => {
 //     }
 // })
 
-// app.use((req, res, next) => {
-//     const end = res.end
-//     res.end = function () {
-//         end.apply(res, arguments)
-//     }
-//     next()
-// })
 
 // HTTP Handlers
 // Users
-// app.get('/users/:id', (req, res) => {
-//     if (!req.user) return res.sendStatus(401);
-//     usersController.getUserById(req, res)
-// })
 app.post('/users', usersController.addUser)
-app.put('/users', passport.authenticate('local'), (req, res) => {
-    res.status(200).send("Authenticated " + req.body.email)
+app.put('/users', passport.authenticate('local'), async (req, res) => {
+    let user = await usersController.getUserByEmail(req.body.email)
+    if (user)
+        res.status(200).send({ name: user[0].name, email: user[0].email })
+    else
+        res.status(401)
 })
 app.delete('/users', usersController.logout)
 

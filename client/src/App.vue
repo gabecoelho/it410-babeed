@@ -1,33 +1,19 @@
 <template>
-  <v-app>
-    <v-app-bar app color="#78909C" dark>
-      <v-toolbar-title class="baby-emoji">👶Babeed</v-toolbar-title>
-      <v-spacer></v-spacer>
-    </v-app-bar>
-    <v-content>
-      <router-view></router-view>
-    </v-content>
-  </v-app>
+  <AppBar />
 </template>
 
 <script>
+import AppBar from "@/components/AppBar";
 import Signin from "@/views/Signin";
+import Dashboard from "@/views/Dashboard";
 
 export default {
   name: "App",
 
   components: {
-    Signin
-  },
-
-  data: () => ({
-    //
-  })
+    AppBar,
+    Signin,
+    Dashboard
+  }
 };
 </script>
-
-<style lang="stylus">
-.baby-emoji {
-  font-size: 4rem;
-}
-</style>
