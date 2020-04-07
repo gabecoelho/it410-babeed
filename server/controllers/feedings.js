@@ -10,7 +10,7 @@ exports.getFeedings = (req, res) => {
     });
 }
 
-exports.addFeeding = (req, res) => {
+exports.addFeeding = async (req, res) => {
     let feeding = new Feeding(req.body)
     console.log(feeding.toString());
     try {
@@ -22,7 +22,7 @@ exports.addFeeding = (req, res) => {
     }
 }
 
-exports.getFeedingById = (req, res) => {
+exports.getFeedingById = async (req, res) => {
     const id = req.params.id
     try {
         let result = await Feeding.findById(id)
@@ -32,7 +32,7 @@ exports.getFeedingById = (req, res) => {
     }
 }
 
-exports.updateFeedingById = (req, res) => {
+exports.updateFeedingById = async (req, res) => {
     let feeding = new Feeding(req.body)
     const id = req.params.id
     try {
@@ -46,7 +46,7 @@ exports.updateFeedingById = (req, res) => {
     }
 }
 
-exports.deleteFeedingById = (req, res) => {
+exports.deleteFeedingById = async (req, res) => {
     const id = req.params.id
     try {
         await Feeding.deleteOne({ _id: id })
