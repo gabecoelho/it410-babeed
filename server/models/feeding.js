@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Feeding = new Schema({
-    email: {
+    username: {
         type: String,
         required: true
     },

@@ -1,8 +1,16 @@
 const Diaper = require('../models/diaper')
 
 exports.getDiapers = function (req, res) {
-    const email = req.user.email
-    Diaper.find({ email }, (err, diapers) => {
+    Diaper.find((err, diapers) => {
+        if (err)
+            console.log(err);
+        else
+            res.json(diapers)
+    });
+}
+exports.getDiapersByUser = function (req, res) {
+    const username = req.user.username
+    Diaper.find({ username }, (err, diapers) => {
         if (err)
             console.log(err);
         else
@@ -22,15 +30,15 @@ exports.addDiaper = async function (req, res) {
     }
 }
 
-exports.getDiaperById = async function (req, res) {
-    const id = req.params.id
-    try {
-        let result = await Diaper.findById(id)
-        res.send(result)
-    } catch (error) {
-        res.status(400).json({ "Message": "Failed to get specified diaper." })
-    }
-}
+// exports.getDiaperById = async function (req, res) {
+//     const id = req.params.id
+//     try {
+//         let result = await Diaper.findById(id)
+//         res.send(result)
+//     } catch (error) {
+//         res.status(400).json({ "Message": "Failed to get specified diaper." })
+//     }
+// }
 
 exports.updateDiaperById = async function (req, res) {
     let diaper = new Diaper(req.body)

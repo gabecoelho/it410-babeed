@@ -128,26 +128,30 @@ app.post('/users', usersController.addUser)
 app.put('/users', passport.authenticate('local'), async (req, res) => {
     let user = await usersController.getUserByEmail(req.body.email)
     if (user)
-        res.status(200).send({ name: user[0].name, email: user[0].email })
+        res.status(200).send({ name: user[0].name, email: user[0].email, username: user[0].username })
     else
         res.status(401)
 })
 app.delete('/users', usersController.logout)
 
 // Diapers
-app.get('/diapers/:id', (req, res) => {
+// app.get('/diapers/:id', (req, res) => {
+//     if (!req.user) return res.sendStatus(401);
+//     diapersController.getDiaperById(req, res)
+// })
+// app.get('/diapers', (req, res) => {
+//     if (!req.user) return res.sendStatus(401);
+//     diapersController.getDiapers(req, res)
+// })
+app.get('/diapers/:user', (req, res) => {
     if (!req.user) return res.sendStatus(401);
-    diapersController.getDiaperById(req, res)
-})
-app.get('/diapers', (req, res) => {
-    if (!req.user) return res.sendStatus(401);
-    diapersController.getDiapers(req, res)
+    diapersController.getDiapersByUser(req, res)
 })
 app.post('/diapers', (req, res) => {
     if (!req.user) return res.sendStatus(401);
     diapersController.addDiaper(req, res)
 })
-app.put('/diapers', (req, res) => {
+app.put('/diapers/:id', (req, res) => {
     if (!req.user) return res.sendStatus(401);
     diapersController.updateDiaperById(req, res)
 })
@@ -157,19 +161,23 @@ app.delete('/diapers/:id', (req, res) => {
 })
 
 // Feedings
-app.get('/feedings/:id', (req, res) => {
+// app.get('/feedings/:id', (req, res) => {
+//     if (!req.user) return res.sendStatus(401);
+//     feedingsController.getFeedingById(req, res)
+// })
+// app.get('/feedings', (req, res) => {
+//     if (!req.user) return res.sendStatus(401);
+//     feedingsController.getFeedings(req, res)
+// })
+app.get('/feedings/:username', (req, res) => {
     if (!req.user) return res.sendStatus(401);
-    feedingsController.getFeedingById(req, res)
-})
-app.get('/feedings', (req, res) => {
-    if (!req.user) return res.sendStatus(401);
-    feedingsController.getFeedings(req, res)
+    feedingsController.getFeedingsByUser(req, res)
 })
 app.post('/feedings', (req, res) => {
     if (!req.user) return res.sendStatus(401);
     feedingsController.addFeeding(req, res)
 })
-app.put('/feedings', (req, res) => {
+app.put('/feedings/:id', (req, res) => {
     if (!req.user) return res.sendStatus(401);
     feedingsController.updateFeedingById(req, res)
 })

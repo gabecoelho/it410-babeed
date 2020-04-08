@@ -1,8 +1,17 @@
 const Feeding = require('../models/feeding')
 
 exports.getFeedings = (req, res) => {
-    const email = req.user.email
-    Feeding.find({ email }, (err, feedings) => {
+    Feeding.find((err, feedings) => {
+        if (err)
+            console.log(err);
+        else
+            res.json(feedings)
+    });
+}
+
+exports.getFeedingsByUser = (req, res) => {
+    const username = req.params.username
+    Feeding.find({ username }, (err, feedings) => {
         if (err)
             console.log(err);
         else
@@ -22,15 +31,15 @@ exports.addFeeding = async (req, res) => {
     }
 }
 
-exports.getFeedingById = async (req, res) => {
-    const id = req.params.id
-    try {
-        let result = await Feeding.findById(id)
-        res.send(result)
-    } catch (error) {
-        res.status(400).json({ "Message": "Failed to get specified feeding entry." })
-    }
-}
+// exports.getFeedingById = async (req, res) => {
+//     const id = req.params.id
+//     try {
+//         let result = await Feeding.findById(id)
+//         res.send(result)
+//     } catch (error) {
+//         res.status(400).json({ "Message": "Failed to get specified feeding entry." })
+//     }
+// }
 
 exports.updateFeedingById = async (req, res) => {
     let feeding = new Feeding(req.body)
