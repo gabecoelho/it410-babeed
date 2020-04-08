@@ -20,6 +20,11 @@
               </v-row>
               <v-row v-if="isSignup" align="center">
                 <v-col cols="12" md="12">
+                  <v-text-field v-model="username" :rules="usernameRules" label="Username" required></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row v-if="isSignup" align="center">
+                <v-col cols="12" md="12">
                   <v-text-field
                     v-model="password"
                     :append-icon="showP1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -124,6 +129,8 @@ export default {
         v => !!v || "The password field is required",
         v => v.length >= 6 || "Password must be more than 6 characters"
       ],
+      username: "",
+      usernameRules: [v => !!v || "The username field is required"],
       loginPasswordRule: [v => !!v || "The password field is required"],
       secondPassword: "",
       terms: false,
@@ -158,12 +165,17 @@ export default {
           {
             email: this.email,
             name: this.name,
+            username: this.username,
             password: this.password
           },
           { withCredentials: true }
         );
         if (response.status === 200) {
-          await this.$store.dispatch("setLoginData", response.data.name);
+          console.log(response.data.username);
+          await this.$store.dispatch("setLoginData", {
+            name: response.data.name,
+            username: response.data.username
+          });
           this.error = false;
           setTimeout(() => this.$router.push("/dashboard"), 500);
         } else {
@@ -183,7 +195,11 @@ export default {
           { withCredentials: true }
         );
         if (response.status === 200) {
-          await this.$store.dispatch("setLoginData", response.data.name);
+          console.log(response.data.username);
+          await this.$store.dispatch("setLoginData", {
+            name: response.data.name,
+            username: response.data.username
+          });
           this.error = false;
           setTimeout(() => this.$router.push("/dashboard"), 500);
         } else {

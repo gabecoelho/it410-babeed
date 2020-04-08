@@ -99,7 +99,6 @@ export default {
       return (zero + num).slice(-digit);
     },
     clockButtonClick() {
-      console.log(this.buttonText);
       if (this.buttonText === "START") {
         this.buttonText = "STOP";
         this.buttonBgColor = "#ef5350";

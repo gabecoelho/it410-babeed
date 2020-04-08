@@ -3,10 +3,7 @@
     <v-app-bar app color="#78909C" dark>
       <v-toolbar-title class="baby-emoji">👶Babeed</v-toolbar-title>
       <v-spacer></v-spacer>
-      <h3
-        v-if="this.$store.state.loggedIn"
-        class="wecolme-message"
-      >Hi, {{this.$store.state.userName}}!</h3>
+      <h3 v-if="this.$store.state.loggedIn" class="wecolme-message">Hi, {{this.$store.state.name}}!</h3>
       <v-btn
         v-if="this.$route.name === 'Dashboard'"
         :loading="loading"
@@ -48,11 +45,6 @@ export default {
     signOut() {
       this.$store.dispatch("setLogoutData");
       if (this.$route.name !== "Signin") this.$router.push("/");
-    }
-  },
-  computed: {
-    userName() {
-      return this.$store.state.userName;
     }
   }
 };
