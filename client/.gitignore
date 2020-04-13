@@ -24,3 +24,5 @@ yarn-error.log*
 *.sw?
 
 node_modules
+.env.d*
+.env.p*

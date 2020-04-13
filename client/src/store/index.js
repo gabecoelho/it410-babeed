@@ -5,6 +5,8 @@ import Axios from 'axios'
 
 Vue.use(Vuex)
 
+const serverUrl = `${process.env.VUE_APP_SERVER_PROTOCOL}://${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}`
+
 export default new Vuex.Store({
   plugins: [
     createPersistedState({
@@ -20,16 +22,13 @@ export default new Vuex.Store({
   },
 
   getters: {
-    // Get only the last 15 elements in each list view (feedings and diapers)
     latestFeedingList(state) {
       return state.feedingList.slice(Math.max(state.feedingList.length - 12, 0))
     },
     latestDiaperList(state) {
       return state.diaperList.slice(Math.max(state.diaperList.length - 12, 0))
     }
-
   },
-  // Define synchronous state change event handlers that mutate internal state
   mutations: {
     setLoading(state, loading) {
       state.loading = loading
@@ -50,7 +49,6 @@ export default new Vuex.Store({
       state.diaperList = diaperList
     }
   },
-  // Define action event handlers that perform 1 or + mutations but don't mutate internal state
   actions: {
     setLoginData({ commit }, user) {
       commit('setLoading', true)
@@ -69,18 +67,19 @@ export default new Vuex.Store({
     // Feedings
     async fetchFeedings({ commit, state }) {
       commit('setLoading', true)
-      const feedingList = await Axios.get('http://localhost:8081/feedings/' + state.username, { withCredentials: true })
+      const feedingList = await Axios.get(serverUrl + '/feedings/' + state.username, { withCredentials: true })
       commit('setFeedingList', feedingList.data)
       commit('setLoading', false)
     },
-    async saveFeeding({ commit, state }, feeding) {
+    async saveFeeding({ commit }, feeding) {
       commit('setLoading', true)
-      await Axios.post('http://localhost:8081/feedings', { username: feeding.username, time: feeding.time, timestamp: feeding.timestamp }, { withCredentials: true })
+      await Axios.post(serverUrl + '/feedings', { username: feeding.username, time: feeding.time, timestamp: feeding.timestamp },
+        { withCredentials: true })
       commit('setLoading', false)
     },
     async removeFeeding({ commit, state }, id) {
       commit('setLoading', true)
-      const response = await Axios.delete('http://localhost:8081/feedings/' + id, { withCredentials: true })
+      const response = await Axios.delete(serverUrl + "/feedings/" + id, { withCredentials: true })
       if (response.status === 200) {
         const index = state.feedingList.findIndex((feeding) => feeding._id === id)
         state.feedingList.splice(index, 1)
@@ -88,25 +87,25 @@ export default new Vuex.Store({
       }
       commit('setLoading', false)
     },
-    async updateFeeding({ commit }, id) {
-
-    },
+    async updateFeeding({ commit }, id) { },
 
     // Diapers
     async fetchDiapers({ commit, state }) {
       commit('setLoading', true)
-      const diaperList = await Axios.get('http://localhost:8081/diapers/' + state.username, { withCredentials: true })
+      const diaperList = await Axios.get(serverUrl + '/diapers/' + state.username,
+        { withCredentials: true })
       commit('setDiaperList', diaperList.data)
       commit('setLoading', false)
     },
     async saveDiaper({ commit }, diaper) {
       commit('setLoading', true)
-      await Axios.post('http://localhost:8081/diapers', { username: diaper.username, type: diaper.type, timestamp: diaper.timestamp }, { withCredentials: true })
+      await Axios.post(serverUrl + '/diapers', { username: diaper.username, type: diaper.type, timestamp: diaper.timestamp },
+        { withCredentials: true })
       commit('setLoading', false)
     },
     async removeDiaper({ commit, state }, id) {
       commit('setLoading', true)
-      const response = await Axios.delete('http://localhost:8081/diapers/' + id, { withCredentials: true })
+      const response = await Axios.delete(serverUrl + '/diapers/' + id, { withCredentials: true })
       if (response.status === 200) {
         const index = state.diaperList.findIndex((diaper) => diaper._id === id)
         state.diaperList.splice(index, 1)
@@ -114,8 +113,6 @@ export default new Vuex.Store({
       }
       commit('setLoading', false)
     },
-    async updateDiaper({ commit }, id) {
-
-    },
+    async updateDiaper({ commit }, id) { },
   }
 })

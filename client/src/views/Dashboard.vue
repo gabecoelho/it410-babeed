@@ -40,18 +40,14 @@ export default {
     Diapers
   },
   beforeCreate: function() {
-    // TODO: Check if there is a user in the store, if there is, OK, if not, redirect to signin.
-    if (!window.sessionStorage.getItem("vuex")) {
-      this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie));
+    if (!this.$store.state.username) {
       this.$router.push("/");
+    } else {
+      if (!window.sessionStorage.getItem("vuex")) {
+        this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie));
+        this.$router.push("/");
+      }
     }
-  },
-  methods: {
-    // TODO: Get stuff from the store??
-    getUserData() {}
-  },
-  mounted() {
-    this.getUserData();
   }
 };
 </script>
