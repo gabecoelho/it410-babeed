@@ -4,8 +4,8 @@
       <li>
         <v-icon>mdi-calendar</v-icon>
         {{new Date(feeding.timestamp).toLocaleString()}}
-        <v-icon>mdi-clock</v-icon>
-        {{feeding.time}}
+        <span>🍼</span>
+        {{formatElapsedTime(feeding.time)}}
         <v-icon
           class="icon-style"
           @click="removeFeeding(JSON.parse(JSON.stringify(feeding))._id)"
@@ -25,6 +25,11 @@ export default {
   mounted() {
     this.$store.dispatch("fetchFeedings");
   },
+  data() {
+    return {
+      formattedElapsedTime: ""
+    };
+  },
   computed: {
     feedingList() {
       return this.$store.getters.latestFeedingList;
@@ -36,6 +41,28 @@ export default {
     },
     editFeeding(id) {
       //   this.$store.dispatch("updateFeeding", id);
+    },
+    formatElapsedTime(elapsedTime) {
+      let newTime = "";
+      let isHour = false;
+
+      for (var i = 0; i < elapsedTime.length; i++) {
+        if (elapsedTime[0] !== "0" || elapsedTime[1] !== "0") {
+          isHour = true;
+        }
+        // Get rid of milliseconds
+        if (elapsedTime[i] !== ".") {
+          newTime += elapsedTime[i];
+        } else {
+          break;
+        }
+      }
+      if (isHour === false) {
+        newTime += " min";
+      } else {
+        newTime += " hrs";
+      }
+      return newTime;
     }
   }
 };

@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <h2>Diaper Type</h2>
     <div @click="selectDiaperType" class="diaper-options">
       <img :style="cssVars" id="wet" src="@/assets/water-drop.png" alt="wet-diaper" />
       <img :style="cssVars" id="poop" src="@/assets/baby-poop.jpg" alt="poopy-diaper" />
@@ -75,6 +76,11 @@ export default {
 <style lang="scss" scoped>
 $color: black;
 $color-light: grey;
+
+h2 {
+  text-align: center;
+  margin-top: 18px;
+}
 
 .diaper-options {
   cursor: pointer;
