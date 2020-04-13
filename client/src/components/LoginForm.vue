@@ -171,13 +171,7 @@ export default {
           { withCredentials: true }
         );
         if (response.status === 200) {
-          console.log(response.data.username);
-          await this.$store.dispatch("setLoginData", {
-            name: response.data.name,
-            username: response.data.username
-          });
-          this.error = false;
-          setTimeout(() => this.$router.push("/dashboard"), 500);
+          this.signIn();
         } else {
           throw Error;
         }
@@ -195,7 +189,6 @@ export default {
           { withCredentials: true }
         );
         if (response.status === 200) {
-          console.log(response.data.username);
           await this.$store.dispatch("setLoginData", {
             name: response.data.name,
             username: response.data.username

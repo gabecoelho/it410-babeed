@@ -9,6 +9,10 @@ var Diaper = new Schema({
     timestamp: {
         type: String,
         required: true
+    },
+    username: {
+        type: String,
+        required: true
     }
 });
 

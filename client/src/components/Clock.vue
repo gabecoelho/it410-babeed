@@ -109,11 +109,16 @@ export default {
         this.stop();
       }
     },
-    save() {
+    async save() {
       if (this.running !== true) {
         if (this.timeBegan !== null) {
-          // TODO: dispatch event to store
-          console.log("Save");
+          const feeding = {
+            username: this.$store.state.username,
+            time: this.time,
+            timestamp: new Date()
+          };
+          await this.$store.dispatch("saveFeeding", feeding);
+          await this.$store.dispatch("fetchFeedings");
           this.reset();
           this.showSuccess = true;
           setTimeout(() => (this.showSuccess = false), 2000);

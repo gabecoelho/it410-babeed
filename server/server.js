@@ -18,20 +18,23 @@ var MongoDBStore = require('connect-mongodb-session')(session);
 var corsOptions = {
     origin: 'http://localhost:8080',
     credentials: true
-    // optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
 app.use(cors(corsOptions))
 
-mongoose.connect('mongodb://localhost:27017/babeed', { useUnifiedTopology: true, useNewUrlParser: true })
-const connection = mongoose.connection
+const connectWithRetry = () => {
+    mongoose.connect('mongodb://mongo:27017/babeed', { useUnifiedTopology: true, useNewUrlParser: true }).then(() => {
+        console.log('MongoDB connection successful')
+    }).catch(err => {
+        console.log('MongoDB connection unsuccessful, retry after 5 seconds... ' + err)
+        setTimeout(connectWithRetry, 5000)
+    })
+}
 
-connection.once('open', () => {
-    console.log("MongoDB connection established.")
-});
+connectWithRetry()
 
 var store = new MongoDBStore({
-    uri: 'mongodb://localhost:27017/babeed',
+    uri: 'mongodb://mongo:27017/babeed',
     collection: 'sessions'
 });
 
@@ -71,7 +74,6 @@ app.use(session({
     secret: "in pheenax not family the",
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-        // domain: '127.0.0.1:8080'
         secure: false
     },
     store: store, resave: true, saveUninitialized: true
@@ -89,7 +91,6 @@ const enforcer = Enforcer(pathToOpenApiDoc)
 app.use((req, res, next) => {
     console.log("Path: " + req.path)
     console.log("Method: " + req.method)
-    // console.log(req.body)
     next()
 })
 
@@ -143,7 +144,7 @@ app.delete('/users', usersController.logout)
 //     if (!req.user) return res.sendStatus(401);
 //     diapersController.getDiapers(req, res)
 // })
-app.get('/diapers/:user', (req, res) => {
+app.get('/diapers/:username', (req, res) => {
     if (!req.user) return res.sendStatus(401);
     diapersController.getDiapersByUser(req, res)
 })
@@ -189,9 +190,4 @@ app.delete('/feedings/:id', (req, res) => {
 const listener = app.listen(port, err => {
     if (err) return console.error(err.stack)
     console.log('Server listening on port ' + listener.address().port)
-})
-
-app.use((err, req, res, next) => {
-    console.log(err)
-    next(err)
 })

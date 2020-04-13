@@ -21,7 +21,6 @@ exports.getFeedingsByUser = (req, res) => {
 
 exports.addFeeding = async (req, res) => {
     let feeding = new Feeding(req.body)
-    console.log(feeding.toString());
     try {
         await feeding.save()
         res.status(200).json({ "Message": "New feeding entry added successfully." })

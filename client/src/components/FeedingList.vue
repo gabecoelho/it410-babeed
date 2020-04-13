@@ -1,7 +1,10 @@
 <template>
   <div>
-    <div v-for="feeding in feedingList" :key="feeding.id">
+    <div v-for="feeding in feedingList" :key="feeding.key">
       <li>
+        <v-icon>mdi-calendar</v-icon>
+        {{new Date(feeding.timestamp).toLocaleString()}}
+        <v-icon>mdi-clock</v-icon>
         {{feeding.time}}
         <v-icon
           class="icon-style"
@@ -29,7 +32,7 @@ export default {
   },
   methods: {
     removeFeeding(id) {
-      //   this.$store.dispatch("removeFeeding", id);
+      this.$store.dispatch("removeFeeding", id);
     },
     editFeeding(id) {
       //   this.$store.dispatch("updateFeeding", id);

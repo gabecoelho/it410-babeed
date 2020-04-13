@@ -9,6 +9,10 @@ var Feeding = new Schema({
     time: {
         type: String,
         required: true
+    },
+    timestamp: {
+        type: String,
+        required: true
     }
 });
 

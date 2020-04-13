@@ -22,10 +22,10 @@ export default new Vuex.Store({
   getters: {
     // Get only the last 15 elements in each list view (feedings and diapers)
     latestFeedingList(state) {
-      return state.feedingList.slice(Math.max(state.feedingList.length - 15, 0))
+      return state.feedingList.slice(Math.max(state.feedingList.length - 12, 0))
     },
-    latestDiapers(state) {
-      return state.diaperList.slice(Math.max(state.diaperList.length - 15, 0))
+    latestDiaperList(state) {
+      return state.diaperList.slice(Math.max(state.diaperList.length - 12, 0))
     }
 
   },
@@ -53,7 +53,6 @@ export default new Vuex.Store({
   // Define action event handlers that perform 1 or + mutations but don't mutate internal state
   actions: {
     setLoginData({ commit }, user) {
-
       commit('setLoading', true)
       commit('setName', user.name)
       commit('setUsername', user.username)
@@ -67,17 +66,56 @@ export default new Vuex.Store({
       commit('setLoggedIn', false)
       commit('setLoading', true)
     },
-    async fetchDiapers({ commit, state }) {
-      commit('setLoading', true)
-      const diaperList = await this.$http.get('http://localhost:8081/diapers/' + state.username, { withCredentials: true })
-      commit('setDiaperList', diaperList.data)
-      commit('setLoading', false)
-    },
+    // Feedings
     async fetchFeedings({ commit, state }) {
       commit('setLoading', true)
       const feedingList = await Axios.get('http://localhost:8081/feedings/' + state.username, { withCredentials: true })
       commit('setFeedingList', feedingList.data)
       commit('setLoading', false)
-    }
+    },
+    async saveFeeding({ commit, state }, feeding) {
+      commit('setLoading', true)
+      await Axios.post('http://localhost:8081/feedings', { username: feeding.username, time: feeding.time, timestamp: feeding.timestamp }, { withCredentials: true })
+      commit('setLoading', false)
+    },
+    async removeFeeding({ commit, state }, id) {
+      commit('setLoading', true)
+      const response = await Axios.delete('http://localhost:8081/feedings/' + id, { withCredentials: true })
+      if (response.status === 200) {
+        const index = state.feedingList.findIndex((feeding) => feeding._id === id)
+        state.feedingList.splice(index, 1)
+        commit('setFeedingList', state.feedingList)
+      }
+      commit('setLoading', false)
+    },
+    async updateFeeding({ commit }, id) {
+
+    },
+
+    // Diapers
+    async fetchDiapers({ commit, state }) {
+      commit('setLoading', true)
+      const diaperList = await Axios.get('http://localhost:8081/diapers/' + state.username, { withCredentials: true })
+      commit('setDiaperList', diaperList.data)
+      commit('setLoading', false)
+    },
+    async saveDiaper({ commit }, diaper) {
+      commit('setLoading', true)
+      await Axios.post('http://localhost:8081/diapers', { username: diaper.username, type: diaper.type, timestamp: diaper.timestamp }, { withCredentials: true })
+      commit('setLoading', false)
+    },
+    async removeDiaper({ commit, state }, id) {
+      commit('setLoading', true)
+      const response = await Axios.delete('http://localhost:8081/diapers/' + id, { withCredentials: true })
+      if (response.status === 200) {
+        const index = state.diaperList.findIndex((diaper) => diaper._id === id)
+        state.diaperList.splice(index, 1)
+        commit('setDiaperList', state.diaperList)
+      }
+      commit('setLoading', false)
+    },
+    async updateDiaper({ commit }, id) {
+
+    },
   }
 })

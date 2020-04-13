@@ -9,7 +9,7 @@ exports.getDiapers = function (req, res) {
     });
 }
 exports.getDiapersByUser = function (req, res) {
-    const username = req.user.username
+    const username = req.params.username
     Diaper.find({ username }, (err, diapers) => {
         if (err)
             console.log(err);
@@ -20,7 +20,6 @@ exports.getDiapersByUser = function (req, res) {
 
 exports.addDiaper = async function (req, res) {
     let diaper = new Diaper(req.body)
-    console.log(diaper.toString());
     try {
         await diaper.save()
         res.status(200).json({ "Message": "New diaper added successfully." })

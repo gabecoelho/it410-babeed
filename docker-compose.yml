@@ -1,26 +1,28 @@
 version: '3'
 
 services: 
-    # TODO: Add vue "client" app here
-    # client:
-    #     container_name: babeed-client
-    #     restart: always
-    #     build: ./client
-    #     volumes:
-    #         -
-    #     ports:
-    #         - 8080:8080
-    #     networks:
-    #         - appnetwork
-    #     depends_on: 
-    #         - server
+    client:
+        container_name: babeed-client
+        restart: always
+        build: ./client
+        volumes:
+            - ./client:/usr/src/client
+            - /usr/src/client/node_modules
+        ports:
+            - '8080:8080'
+        links: 
+            - server
+        networks:
+            - appnetwork
+        depends_on: 
+            - server
     server:
         container_name: babeed-server
         restart: always
         build: ./server
         volumes: 
             - ./server:/usr/src/server
-            - /usr/src/app/node_modules
+            - /usr/src/server/node_modules
         ports: 
             - '8081:8081'
         links: 
@@ -34,7 +36,7 @@ services:
         container_name: mongo
         restart: always
         volumes:
-            - ~/data/db/:/data/db
+            - ~/data/db:/data/db
         ports:
             - '27017:27017'
         networks:
