@@ -5,6 +5,7 @@ services:
         container_name: babeed-client
         restart: always
         build: ./client
+        env_file: ./client/.env
         volumes:
             - ./client:/usr/src/client
             - /usr/src/client/node_modules
@@ -20,6 +21,7 @@ services:
         container_name: babeed-server
         restart: always
         build: ./server
+        env_file: ./server/.env
         volumes: 
             - ./server:/usr/src/server
             - /usr/src/server/node_modules
