@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/gabecoelho/it410-babeed#readme",
   "dependencies": {
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^5.0.0",
     "connect-mongodb-session": "^2.3.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
